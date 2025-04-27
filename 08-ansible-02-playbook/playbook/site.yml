@@ -38,7 +38,7 @@
         mode: '0755'
     - name: Download Vector archive
       ansible.builtin.get_url:
-        src: https://s3.amazonaws.com/dd-agent/scripts/install_script_vector0.sh
+        url: https://s3.amazonaws.com/dd-agent/scripts/install_script_vector0.sh
         dest: /opt/vector/install_script_vector0.sh
         mode: '0755'
     - name: Unpack Vector
