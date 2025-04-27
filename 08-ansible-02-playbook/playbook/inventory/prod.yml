@@ -2,6 +2,6 @@
 all:
   hosts:
     clickhouse-01:
-      ansible_host: 158.160.44.150
+      ansible_host: localhost
     vector-01:
-      ansible_host: 158.160.44.150
+      ansible_host: localhost
