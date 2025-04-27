@@ -2,7 +2,7 @@
 
 - name: Download ClickHouse GPG key
   get_url:
-    url: https://packages.clickhouse.com/CLICKHOUSE-KEY.GPG
+    url: https://packages.clickhouse.com/repo-archive/CLICKHOUSE-KEY.GPG
     dest: /usr/share/keyrings/clickhouse-key.gpg
     mode: '0644'
   become: true
