@@ -1,15 +1,12 @@
 ---
 all:
   hosts:
-    clickhouse-01:
-      ansible_host: localhost
-    vector-01:
-      ansible_host: localhost
-
+    localhost:
+      ansible_connection: local
   children:
     clickhouse:
       hosts:
-        clickhouse-01:
+        localhost
     vector:
       hosts:
-        vector-01:
+        localhost
