@@ -15,7 +15,7 @@
 - name: Unpack Vector
   unarchive:
     src: /tmp/vector.tar.gz
-    dest: "{{ vector_config_dir }}"
+    dest: /opt/vector
     remote_src: yes
 
 - name: Install vector binary
