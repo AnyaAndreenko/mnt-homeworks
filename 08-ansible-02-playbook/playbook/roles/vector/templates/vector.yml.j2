@@ -1,0 +1,14 @@
+# Простая конфигурация Vector
+data_dir: "/var/lib/vector"
+
+sources:
+  stdin:
+    type: stdin
+
+sinks:
+  stdout:
+    type: console
+    inputs:
+      - stdin
+    encoding:
+      codec: text
