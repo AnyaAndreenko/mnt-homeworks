@@ -1,0 +1,54 @@
+---
+- name: Create directory for vector
+  file:
+    path: /opt/vector
+    state: directory
+    mode: '0755'
+
+- name: Download Vector archive
+  get_url:
+    url: "https://packages.timber.io/vector/0.35.0/vector-0.35.0-x86_64-unknown-linux-gnu.tar.gz"
+    dest: /tmp/vector.tar.gz
+    mode: '0644'
+
+- name: Unpack Vector
+  unarchive:
+    src: /tmp/vector.tar.gz
+    dest: /opt/vector
+    remote_src: yes
+
+- name: Install vector binary
+  copy:
+    src: /opt/vector/vector
+    dest: /usr/local/bin/vector
+    mode: '0755'
+
+- name: Deploy vector config
+  template:
+    src: vector.yml.j2
+    dest: /etc/vector/vector.yml
+    mode: '0644'
+  notify: Restart Vector
+
+- name: Create systemd service file
+  copy:
+    content: |
+      [Unit]
+      Description=Vector service
+      After=network.target
+
+      [Service]
+      ExecStart=/usr/local/bin/vector --config /etc/vector/vector.yml
+      Restart=on-failure
+
+      [Install]
+      WantedBy=multi-user.target
+    dest: /etc/systemd/system/vector.service
+    mode: '0644'
+  notify: Restart Vector
+
+- name: Ensure vector service is running
+  systemd:
+    name: vector
+    state: started
+    enabled: yes
