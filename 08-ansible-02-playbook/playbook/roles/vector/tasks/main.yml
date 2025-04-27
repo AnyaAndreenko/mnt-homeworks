@@ -1,6 +1,6 @@
 ---
 - name: Create directory for vector
-  file:
+  ansible.builtin.file:
     path: /opt/vector
     state: directory
     mode: '0755'
