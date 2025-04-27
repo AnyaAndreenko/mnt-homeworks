@@ -38,7 +38,7 @@
         mode: '0755'
     - name: Download Vector archive
       ansible.builtin.get_url:
-        url: https://github.com/vectordotdev/vector/releases/download/v0.24.0/vector-0.24.0-linux-x86_64.tar.gz
+        url: 'bash -c "$(curl -L https://setup.vector.dev)"'
         dest: /opt/vector/vector-0.24.0-linux-x86_64.tar.gz
     - name: Unpack Vector
       ansible.builtin.unarchive:
