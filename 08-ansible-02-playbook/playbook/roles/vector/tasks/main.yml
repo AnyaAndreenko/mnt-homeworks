@@ -4,6 +4,7 @@
     path: /opt/vector
     state: directory
     mode: '0755'
+  become: true
 
 - name: Download Vector archive
   get_url:
