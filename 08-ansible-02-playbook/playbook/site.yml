@@ -5,6 +5,13 @@
   roles:
     - clickhouse
 
+- name: Create directory for vector
+  ansible.builtin.file:
+    path: /opt/vector
+    state: directory
+    mode: '0755'
+  become: true
+  
 - name: Install Vector
   hosts: vector
   become: true
