@@ -1,33 +1,33 @@
 ---
-- name: Add ClickHouse APT key
-  become: true
-  apt_key:
+
+- name: Download ClickHouse GPG key
+  get_url:
     url: https://packages.clickhouse.com/CLICKHOUSE-KEY.GPG
-    state: present
+    dest: /usr/share/keyrings/clickhouse-key.gpg
+    mode: '0644'
+  become: true
 
 - name: Add ClickHouse APT repository
-  become: true
   apt_repository:
-    repo: "deb https://packages.clickhouse.com/deb stable main"
+    repo: "deb [signed-by=/usr/share/keyrings/clickhouse-key.gpg] https://packages.clickhouse.com/deb stable main"
     state: present
     filename: clickhouse
+  become: true
 
 - name: Update apt cache
-  become: true
   apt:
-    update_cache: yes
+    update_cache: true
+  become: true
 
 - name: Install ClickHouse packages
-  become: true
   apt:
-    name:
-      - clickhouse-client
-      - clickhouse-server
+    name: "{{ clickhouse_packages }}"
     state: present
-
-- name: Ensure ClickHouse service is running
   become: true
+
+- name: Ensure ClickHouse server is started and enabled
   service:
     name: clickhouse-server
     state: started
-    enabled: yes
+    enabled: true
+  become: true
