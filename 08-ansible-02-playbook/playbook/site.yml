@@ -2,18 +2,46 @@
 - name: Install Clickhouse
   hosts: clickhouse
   become: true
-  roles:
-    - clickhouse
 
-- name: Create directory for vector
-  ansible.builtin.file:
-    path: /opt/vector
-    state: directory
-    mode: '0755'
-  become: true
-  
+  tasks:
+    - name: Download ClickHouse GPG key
+      ansible.builtin.get_url:
+        url: https://packages.clickhouse.com/CLICKHOUSE-KEY.GPG
+        dest: /usr/share/keyrings/clickhouse-key.gpg
+    - name: Add ClickHouse APT repository
+      ansible.builtin.apt_repository:
+        repo: deb [signed-by=/usr/share/keyrings/clickhouse-key.gpg] https://packages.clickhouse.com/deb/stable/ main/
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+    - name: Install ClickHouse packages
+      ansible.builtin.apt:
+        name:
+          - clickhouse-client
+          - clickhouse-server
+        state: present
+    - name: Ensure ClickHouse server is started and enabled
+      ansible.builtin.systemd:
+        name: clickhouse-server
+        enabled: yes
+        state: started
+
 - name: Install Vector
   hosts: vector
   become: true
-  roles:
-    - vector
+
+  tasks:
+    - name: Create directory for vector
+      ansible.builtin.file:
+        path: /opt/vector
+        state: directory
+        mode: '0755'
+    - name: Download Vector archive
+      ansible.builtin.get_url:
+        url: https://github.com/vectordotdev/vector/releases/download/v0.24.0/vector-0.24.0-linux-x86_64.tar.gz
+        dest: /opt/vector/vector-0.24.0-linux-x86_64.tar.gz
+    - name: Unpack Vector
+      ansible.builtin.unarchive:
+        src: /opt/vector/vector-0.24.0-linux-x86_64.tar.gz
+        dest: /opt/vector/
+        remote_src: yes
