@@ -38,10 +38,11 @@
         mode: '0755'
     - name: Download Vector archive
       ansible.builtin.get_url:
-        url: 'bash -c "$(curl -L https://setup.vector.dev)"'
-        dest: /opt/vector/vector-0.24.0-linux-x86_64.tar.gz
+        src: https://s3.amazonaws.com/dd-agent/scripts/install_script_vector0.sh
+        dest: /opt/vector/install_script_vector0.sh
+        mode: '0755'
     - name: Unpack Vector
       ansible.builtin.unarchive:
-        src: /opt/vector/vector-0.24.0-linux-x86_64.tar.gz
+        src: /opt/vector/install_script_vector0.sh
         dest: /opt/vector/
         remote_src: yes
