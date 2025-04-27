@@ -5,3 +5,11 @@ all:
       ansible_host: localhost
     vector-01:
       ansible_host: localhost
+
+  children:
+    clickhouse:
+      hosts:
+        clickhouse-01:
+    vector:
+      hosts:
+        vector-01:
