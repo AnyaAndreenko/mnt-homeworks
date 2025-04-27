@@ -1,7 +1,7 @@
 ---
 - name: Create directory for vector
   ansible.builtin.file:
-    path: "{{ vector_config_dir }}"
+    path: /opt/vector/
     state: directory
     mode: '0755'
   become: true
@@ -15,7 +15,7 @@
 - name: Unpack Vector
   unarchive:
     src: /tmp/vector.tar.gz
-    dest: /opt/vector
+    dest: /opt/vector/
     remote_src: yes
 
 - name: Install vector binary
