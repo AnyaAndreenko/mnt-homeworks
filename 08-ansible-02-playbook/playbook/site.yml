@@ -6,7 +6,7 @@
   tasks:
     - name: Download ClickHouse GPG key
       ansible.builtin.get_url:
-        url: https://packages.clickhouse.com/CLICKHOUSE-KEY.GPG
+        url: https://packages.clickhouse.com/repo-archive/CLICKHOUSE-KEY.GPG
         dest: /usr/share/keyrings/clickhouse-key.gpg
     - name: Add ClickHouse APT repository
       ansible.builtin.apt_repository:
