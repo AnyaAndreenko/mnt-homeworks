@@ -32,7 +32,7 @@
   tasks:
     - name: Download Vector GPG key
       ansible.builtin.get_url:
-        url: https://repositories.vector.dev/gpg.key
+        url: https://packages.timber.io/public/vector/gpg.7568A90D4721FFCE.key
         dest: /usr/share/keyrings/vector-archive-keyring.gpg
         mode: '0644'
 
