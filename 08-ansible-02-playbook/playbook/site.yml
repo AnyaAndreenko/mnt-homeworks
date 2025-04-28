@@ -30,36 +30,22 @@
   hosts: vector
   become: true
   tasks:
-    - name: Add APT key
-      ansible.builtin.apt_key:
-        url: https://repositories.timber.io/public/vector/gpg.key
-        state: present
+    - name: Download Vector GPG key
+      ansible.builtin.get_url:
+        url: https://repositories.vector.dev/gpg.key
+        dest: /usr/share/keyrings/vector-archive-keyring.gpg
+        mode: '0644'
 
-    - name: Add Vector repository
+    - name: Add Vector APT repository
       ansible.builtin.apt_repository:
-        repo: "deb https://repositories.timber.io/public/vector/deb/ubuntu focal main"
-        state: present
+        repo: "deb [signed-by=/usr/share/keyrings/vector-archive-keyring.gpg] https://repositories.vector.dev/apt stable main"
+        filename: vector
 
     - name: Update apt cache
       ansible.builtin.apt:
         update_cache: yes
 
-    - name: Install Vector package
+    - name: Install vector package
       ansible.builtin.apt:
         name: vector
-        state: latest
-
-    - name: Deploy vector config
-      ansible.builtin.template:
-        src: templates/vector.yml.j2
-        dest: /etc/vector/vector.toml
-        mode: '0644'
-      notify:
-        - Restart Vector
-
-  handlers:
-    - name: Restart Vector
-      ansible.builtin.systemd:
-        name: vector
-        state: restarted
-        enabled: true
+        state: present
