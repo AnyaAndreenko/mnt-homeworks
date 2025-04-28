@@ -29,20 +29,34 @@
 - name: Install Vector
   hosts: vector
   become: true
-
   tasks:
-    - name: Create directory for vector
+    - name: Create directory /opt/vector
       ansible.builtin.file:
         path: /opt/vector
         state: directory
         mode: '0755'
-    - name: Download Vector archive
+
+    - name: Download Vector DEB package
       ansible.builtin.get_url:
-        url: https://s3.amazonaws.com/dd-agent/scripts/install_script_vector0.sh
-        dest: /opt/vector/install_script_vector0.sh
-        mode: '0755'
-    - name: Unpack Vector
-      ansible.builtin.unarchive:
-        src: /opt/vector/install_script_vector0.sh
-        dest: /opt/vector/
-        remote_src: yes
+        url: https://packages.timber.io/vector/0.33.0/vector_0.33.0-1_amd64.deb
+        dest: /tmp/vector.deb
+        mode: '0644'
+
+    - name: Install Vector from DEB package
+      ansible.builtin.apt:
+        deb: /tmp/vector.deb
+
+    - name: Deploy vector config
+      ansible.builtin.template:
+        src: templates/vector.j2
+        dest: /etc/vector/vector.toml
+        mode: '0644'
+      notify:
+        - Restart Vector
+
+  handlers:
+    - name: Restart Vector
+      ansible.builtin.systemd:
+        name: vector
+        state: restarted
+        enabled: true
