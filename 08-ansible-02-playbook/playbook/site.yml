@@ -10,7 +10,7 @@
         dest: /usr/share/keyrings/clickhouse-key.gpg
     - name: Add ClickHouse APT repository
       ansible.builtin.apt_repository:
-        repo: deb [signed-by=/usr/share/keyrings/clickhouse-key.gpg] https://packages.clickhouse.com/deb/stable/ main/
+        repo: "deb [signed-by=/usr/share/keyrings/clickhouse-key.gpg] https://packages.clickhouse.com/deb stable main"
     - name: Update apt cache
       ansible.builtin.apt:
         update_cache: yes
@@ -66,4 +66,3 @@
         name: vector
         state: restarted
         enabled: true
-        
