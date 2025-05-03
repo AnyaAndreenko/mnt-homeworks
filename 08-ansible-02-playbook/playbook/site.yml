@@ -42,9 +42,15 @@
         dest: /tmp/vector
         mode: '0644'
 
+    - name: Check if the DEB package was downloaded
+      ansible.builtin.stat:
+        path: /tmp/vector
+      register: vector_package
+
     - name: Install Vector from DEB package
       ansible.builtin.apt:
         deb: /tmp/vector
+      when: vector_package.stat.exists
 
     - name: Deploy vector config
       ansible.builtin.template:
@@ -60,3 +66,4 @@
         name: vector
         state: restarted
         enabled: true
+        
