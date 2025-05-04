@@ -1,33 +1,29 @@
 ---
-
-- name: Download ClickHouse GPG key
-  get_url:
-    url: https://packages.clickhouse.com/repo-archive/CLICKHOUSE-KEY.GPG
-    dest: /usr/share/keyrings/clickhouse-key.gpg
+- name: Download ClickHouse GPG key file
+  ansible.builtin.get_url:
+    url: https://packages.clickhouse.com/CLICKHOUSE-KEY.GPG
+    dest: /etc/apt/keyrings/clickhouse.gpg
     mode: '0644'
-  become: true
 
 - name: Add ClickHouse APT repository
-  apt_repository:
-    repo: "deb [signed-by=/usr/share/keyrings/clickhouse-key.gpg] https://packages.clickhouse.com/deb stable main"
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/clickhouse.gpg] https://packages.clickhouse.com/deb stable main"
     state: present
     filename: clickhouse
-  become: true
 
 - name: Update apt cache
-  apt:
-    update_cache: true
-  become: true
+  ansible.builtin.apt:
+    update_cache: yes
 
 - name: Install ClickHouse packages
-  apt:
-    name: "{{ clickhouse_packages }}"
+  ansible.builtin.apt:
+    name:
+      - clickhouse-client
+      - clickhouse-server
     state: present
-  become: true
 
 - name: Ensure ClickHouse server is started and enabled
-  service:
+  ansible.builtin.service:
     name: clickhouse-server
     state: started
     enabled: true
-  become: true
