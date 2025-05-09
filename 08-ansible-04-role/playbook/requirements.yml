@@ -5,9 +5,9 @@
   name: clickhouse
 - src: git@github.com:AnyaAndreenko/vector-role.git
   scm: git
-  version: "0.1.0"
+  version: "1.0.0"
   name: vector
 - src: git@github.com:AnyaAndreenko/lighthouse-role.git
   scm: git
-  version: "0.1.0"
+  version: "1.0.0"
   name: lighthouse
