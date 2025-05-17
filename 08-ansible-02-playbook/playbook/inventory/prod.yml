@@ -10,3 +10,6 @@ all:
     vector:
       hosts:
         localhost
+    lighthouse:
+      hosts:
+        localhost
