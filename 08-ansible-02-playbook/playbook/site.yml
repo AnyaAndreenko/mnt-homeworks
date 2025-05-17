@@ -1,4 +1,9 @@
 ---
+- name: Install LightHouse
+  hosts: lighthouse
+  roles:
+    - lighthouse
+
 - name: Install Clickhouse
   hosts: clickhouse
   become: true

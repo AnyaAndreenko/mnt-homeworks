@@ -1,0 +1,49 @@
+---
+- name: Установить Nginx
+  apt:
+    name: nginx
+    state: present
+  become: true
+
+- name: Создать каталог для LightHouse
+  file:
+    path: "{{ lighthouse_install_dir }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+  become: true
+
+- name: Скачать LightHouse
+  get_url:
+    url: "https://github.com/VKCOM/lighthouse/archive/refs/heads/master.zip"
+    dest: "/tmp/lighthouse.zip"
+  become: true
+
+- name: Распаковать LightHouse
+  unarchive:
+    src: "/tmp/lighthouse.zip"
+    dest: "{{ lighthouse_install_dir }}"
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+  become: true
+
+- name: Развернуть конфигурацию Nginx
+  template:
+    src: nginx.conf.j2
+    dest: "{{ nginx_conf_path }}"
+  notify: Перезапустить Nginx
+  become: true
+
+- name: Создать символическую ссылку для конфигурации Nginx
+  file:
+    src: "{{ nginx_conf_path }}"
+    dest: "{{ nginx_conf_link }}"
+    state: link
+  become: true
+
+- name: Удалить файл по умолчанию Nginx
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  become: true

@@ -1,0 +1,4 @@
+lighthouse_version: "latest"
+lighthouse_install_dir: "/usr/share/nginx/html/lighthouse"
+nginx_conf_path: "/etc/nginx/sites-available/lighthouse"
+nginx_conf_link: "/etc/nginx/sites-enabled/lighthouse"
