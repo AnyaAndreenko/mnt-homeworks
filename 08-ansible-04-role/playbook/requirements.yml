@@ -7,10 +7,10 @@
 - name: vector
   src: git@github.com:AnyaAndreenko/vector-role.git
   scm: git
-  #version: "1.0.0"
+  version: "1.0.0"
   
 - name: lighthouse
   src: git@github.com:AnyaAndreenko/lighthouse-role.git
   scm: git
-  #version: "1.0.0"
+  version: "1.0.0"
   
