@@ -33,7 +33,7 @@ services:
     networks:
       - elastic
     depends_on:
-      - es-warm
+      - elasticsearch-warm
 
   elasticsearch-warm:
     image: elasticsearch:8.7.0
