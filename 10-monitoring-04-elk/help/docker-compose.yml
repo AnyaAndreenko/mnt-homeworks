@@ -9,12 +9,12 @@ services:
 
   es-hot:
     image: elasticsearch:8.7.0
-    container_name: es-hot
+    container_name: elasticsearch-hot
     environment:
-      - node.name=es-hot
-      - cluster.name=es-docker-cluster
-      - discovery.seed_hosts=es-hot,es-warm
-      - cluster.initial_master_nodes=es-hot,es-warm
+      - node.name=elasticsearch-hot
+      - cluster.name=elasticsearch-docker-cluster
+      - discovery.seed_hosts=elasticsearch-hot,elasticsearch-warm
+      - cluster.initial_master_nodes=elasticsearch-hot,elasticsearch-warm
       - node.roles=master,data_content,data_hot  
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - "http.host=0.0.0.0"
@@ -37,12 +37,12 @@ services:
 
   es-warm:
     image: elasticsearch:8.7.0
-    container_name: es-warm
+    container_name: elasticsearch-warm
     environment:
-      - node.name=es-warm
-      - cluster.name=es-docker-cluster
-      - discovery.seed_hosts=es-hot,es-warm
-      - cluster.initial_master_nodes=es-hot,es-warm
+      - node.name=elasticsearch-warm
+      - cluster.name=elasticsearch-docker-cluster
+      - discovery.seed_hosts=elasticsearch-hot,elasticsearch-warm
+      - cluster.initial_master_nodes=elasticsearch-hot,elasticsearch-warm
       - node.roles=master,data_warm
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - xpack.security.enabled=false
@@ -65,8 +65,8 @@ services:
     ports:
       - 5601:5601
     environment:
-      ELASTICSEARCH_URL: http://es-hot:9200
-      ELASTICSEARCH_HOSTS: '["http://es-hot:9200","http://es-warm:9200"]'
+      ELASTICSEARCH_URL: http://elasticsearch-hot:9200
+      ELASTICSEARCH_HOSTS: '["http://elasticsearch-hot:9200","http://elasticsearch-warm:9200"]'
     networks:
       - elastic
     depends_on:
@@ -87,8 +87,8 @@ services:
     networks:
       - elastic
     depends_on:
-      - es-hot
-      - es-warm
+      - elasticsearch-hot
+      - elasticsearch-warm
 
   filebeat:
     image: elastic/filebeat:8.7.0
