@@ -7,7 +7,7 @@
 version: '2.2'
 services:
 
-  es-hot:
+  elasticsearch-hot:
     image: elasticsearch:8.7.0
     container_name: elasticsearch-hot
     environment:
@@ -35,7 +35,7 @@ services:
     depends_on:
       - es-warm
 
-  es-warm:
+  elasticsearch-warm:
     image: elasticsearch:8.7.0
     container_name: elasticsearch-warm
     environment:
@@ -70,8 +70,8 @@ services:
     networks:
       - elastic
     depends_on:
-      - es-hot
-      - es-warm
+      - elasticsearch-hot
+      - elasticsearch-warm
 
   logstash:
     image: logstash:8.7.0
